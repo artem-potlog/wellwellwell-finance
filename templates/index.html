@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wellwellwell.finance</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" href="/static/logo.png" type="image/png">
+</head>
+<body>
+    <div class="app">
+        <header>
+            <img src="/static/logo.png" alt="wellwellwell.finance logo" class="logo">
+            <h1>wellwellwell.finance</h1>
+            <p class="slogan">Drill your knowledge</p>
+        </header>
+
+        <div class="scoreboard">
+            <div class="stat">
+                <span class="stat-value" id="score">0</span>
+                <span class="stat-label">Correct</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value" id="total">0</span>
+                <span class="stat-label">Answered</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value" id="pct">0%</span>
+                <span class="stat-label">Accuracy</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value" id="streak">0</span>
+                <span class="stat-label">Streak</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="topic">Topic</label>
+                <select id="topic">
+                    <option value="mixed">Mixed (All Topics)</option>
+                    <option value="ep_accounting">E&P Accounting</option>
+                    <option value="three_statement">3-Statement Modeling</option>
+                    <option value="valuation">Valuation</option>
+                    <option value="deferred_tax">Deferred Tax (DTA/DTL)</option>
+                    <option value="ukcs_tax">UKCS Tax Regime</option>
+                    <option value="og_ev_metrics">O&G EV & Key Metrics</option>
+                    <option value="debt_financing">Debt & Financing</option>
+                    <option value="dcf">DCF Analysis</option>
+                    <option value="nav_modeling">NAV Modeling</option>
+                    <option value="ma_modeling">M&A / Merger Modeling</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="difficulty">Difficulty</label>
+                <select id="difficulty">
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate" selected>Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="quiz-area">
+            <div id="welcome" class="card welcome-card">
+                <p>Select a topic and difficulty, then press the button below to start.</p>
+                <button id="start-btn" class="btn btn-primary" onclick="fetchQuestion()">Start Quiz</button>
+            </div>
+
+            <div id="loading" class="card loading-card" style="display:none;">
+                <div class="spinner"></div>
+                <p>Generating question...</p>
+            </div>
+
+            <div id="error-card" class="card error-card" style="display:none;">
+                <p id="error-msg"></p>
+                <button class="btn btn-primary" onclick="fetchQuestion()">Try Again</button>
+            </div>
+
+            <div id="question-card" class="card" style="display:none;">
+                <div class="question-number" id="q-number">Question 1</div>
+                <div class="question-text" id="q-text"></div>
+                <div class="options" id="options"></div>
+            </div>
+
+            <div id="result-card" class="card" style="display:none;">
+                <div class="result-banner" id="result-banner"></div>
+                <div class="correct-answer" id="correct-answer"></div>
+                <div class="explanation" id="explanation"></div>
+                <button class="btn btn-primary" onclick="fetchQuestion()">Next Question</button>
+            </div>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>
