@@ -450,19 +450,34 @@ Return valid JSON with exactly this structure:
   "explanation": "Detailed explanation of why the correct answer is right and why each wrong answer is wrong. Reference the answers by their text, NOT by letter. Reference journal entries, statement impacts, and E&P concepts."
 }}"""
 
+    is_reasoning = MODEL.startswith("o")
+
+    if is_reasoning:
+        messages = [
+            {
+                "role": "user",
+                "content": f"You are an expert quiz master for Oil & Gas E&P financial accounting, 3-statement modeling, and valuation. Use this knowledge base to craft questions:\n\n{KNOWLEDGE_BASE}\n\n---\n\n{user_prompt}"
+            }
+        ]
+    else:
+        messages = [
+            {
+                "role": "system",
+                "content": f"You are an expert quiz master for Oil & Gas E&P financial accounting, 3-statement modeling, and valuation. Use this knowledge base to craft questions:\n\n{KNOWLEDGE_BASE}"
+            },
+            {"role": "user", "content": user_prompt}
+        ]
+
     try:
-        response = client.chat.completions.create(
-            model=MODEL,
-            messages=[
-                {
-                    "role": "system",
-                    "content": f"You are an expert quiz master for Oil & Gas E&P financial accounting, 3-statement modeling, and valuation. Use this knowledge base to craft questions:\n\n{KNOWLEDGE_BASE}"
-                },
-                {"role": "user", "content": user_prompt}
-            ],
-            response_format={"type": "json_object"},
-            temperature=0.9,
-        )
+        api_kwargs = {
+            "model": MODEL,
+            "messages": messages,
+            "response_format": {"type": "json_object"},
+        }
+        if not is_reasoning:
+            api_kwargs["temperature"] = 0.9
+
+        response = client.chat.completions.create(**api_kwargs)
 
         result = json.loads(response.choices[0].message.content)
 
